@@ -1,24 +1,37 @@
 <!DOCTYPE html>
-
+<!-- We can reference http://justnotepad.com for design and impementation -->
 <html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="styles/main.css">
-        <script type="text/javascript" src = "scripts/main.js"></script>
-        <title>Note Tracker</title>
-    </head>
-    <body>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles/main.css">
+    <script type="text/javascript" src = "scripts/main.js"></script>
+    <link rel="icon" href="img/tictactoe.png">
+    <title>Note Tracker</title>
+</head>
+<body>
+    <header>
         <h1>Note Tracker</h1>
         <h2>Welcome to Note Tracker! Add a note below, or view and edit any existing notes</h2>
-    
-    
-        <form>
-
+    </header>
+    <section id="options">
+        <h4>Options</h4>
+        <button type="button" id="newNote">New Note</button>
+        <button type="button" id="viewNote">View Note</button>
+        <button type="button" id="editNote">Edit Note</button>
+        <button type="button" id="removeNote">Remove Note</button>
+    </section>
+    <main>
+        <h2>Notepad</h2>
+        <form id="notepad">
+            <label for="username">Username:</label>
+            <input type="text" id="username"><br><br>
+            <textarea rows="20" id="textpad" placeholer="Write Your Notes Here..."></textarea><br>
+            <span id="counter">Words: </span>
+            <input type="submit" value="Submit Note!">
         </form>
-
-
-    </body>
-
-
-
+    </main>
+    <footer>
+        <p>insert random metadata or stuff here</p>
+    </footer>
+</body>
 </html>
