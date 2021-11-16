@@ -5,13 +5,14 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="styles/main.css">
     <script type="text/javascript" src = "scripts/main.js"></script>
-    <link rel="icon" href="img/tictactoe.png">
+    <link rel="icon" href="img/notepad.png">
     <title>Note Tracker</title>
 </head>
 <body>
     <header>
         <h1>Note Tracker</h1>
         <h2>Welcome to Note Tracker! Add a note below, or view and edit any existing notes</h2>
+        <h3 id="error">Use this to display error message</h3>
     </header>
     <section id="options">
         <h4>Options</h4>
@@ -25,9 +26,9 @@
         <form id="notepad">
             <label for="username">Username:</label>
             <input type="text" id="username"><br><br>
-            <textarea rows="20" id="textpad" placeholer="Write Your Notes Here..."></textarea><br>
+            <textarea rows="20" id="textpad" placeholder="Write Your Notes Here..."></textarea><br>
             <span id="counter">Words: </span>
-            <input type="submit" value="Submit Note!">
+            <input type="button" id="addNote" value="Submit Note!">
         </form>
     </main>
     <footer>
