@@ -1,15 +1,18 @@
+
 // All if statements currently filled with testing data 
 
 const fs = require("fs");
 const http = require("http");
 
+// Headers for Access Control to allow requests from our local machine 
+// to go through, since they have the same origin as our server
+const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE'
+  };
+
 const server = http.createServer((req, res) => {
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE',
-        'Access-Control-Max-Age': 2592000, // 30 days
-        /** add other headers as per requirement */
-      };
+    
     res.writeHead(200, headers);
     
     if (req.method === 'GET') { // Use for view note
