@@ -8,26 +8,58 @@ const http = require("http");
 // to go through, since they have the same origin as our server
 const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE'
+    'Access-Control-Allow-Methods': 'POST, GET, PUT, DELETE',
+    'Content-Type': 'application/json'
   };
 
 const server = http.createServer((req, res) => {
-    
     res.writeHead(200, headers);
-    
-    if (req.method === 'GET') { // Use for view note
-        console.log("get");
-    }   
-    else if (req.method === 'POST') { // Use for adding note
-        console.log("post");
+    // Get requests don't allow a body, so we use post for both viewing and creating a new note since we need a body to search for an existing note 
+    if (req.method === 'POST') { // Use for adding note
+        // Code to read data from a message found on nodejs website
         let data = '';
         req.on('data', chunk => {
             data += chunk;
         })
+        
         req.on('end', () => {
-        console.log(JSON.parse(data)); // 'Buy the milk'
-        res.end();
+            let info = JSON.parse(data);
+            let username = info.name;
+            let filePath = "./Notes/" + username + ".txt";      //Creates the right file path for the notes in our local Notes folder
+            let note;
+
+            if (info.type === "Add") {
+
+                note = info.text;     
+            
+                fs.writeFile(filePath, note, err => {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+                });
+                
+                res.end();
+            }
+            else if (info.type === "View"){
+                
+                fs.readFile(filePath, 'utf8', (err, message) => {
+                    if (err) {
+                        console.error(err);
+                        note = {
+                            "text": "No note on file for this username"
+                        };
+                    }
+                    else {
+                        note = {
+                            "text": message
+                        };
+                    }
+                    res.end(JSON.stringify(note)); 
+                });  
+            }
         })
+        
     } 
     else if (req.method === 'PUT') { // Use for updating note
         console.log("put");
@@ -35,7 +67,6 @@ const server = http.createServer((req, res) => {
     else if (req.method === 'DELETE') { // Use for deleting note
         console.log("delete");
     }
-    res.end();
 });
 
 server.listen(8000);

@@ -4,12 +4,10 @@ function displayNotepad() {
 
 
 
-let username;
-
 
 
 function addNote() {
-    username = document.querySelector("#username").value;
+    let username = document.querySelector("#username").value;
     let note = document.querySelector("#textpad").value;
 
     if (username == '') {
@@ -22,34 +20,45 @@ function addNote() {
     }
 
     let info = {
-        name: username,
-        text: note
+        "name": username,
+        "text": note,
+        "type": "Add"
     };
-
-    console.log(JSON.stringify(info));
 
     fetch('http://localhost:8000', {
         method: 'POST',
         body: JSON.stringify(info)
-    })
+    });
 
 }
 
 function viewNote() {
-    username = document.querySelector("#username").value;
+    let username = document.querySelector("#username").value;
+    let response;
 
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
         return;
     }
-        
+    
+    let info = {
+        "name": username,
+        "type": "View"
+    };
+
+    console.log(JSON.stringify(info));
     fetch('http://localhost:8000', {
-        method: 'GET'
+        method: 'POST',
+        body: JSON.stringify(info)
     })
+    .then (response => response.json())
+    .then (data => obj = data)
+    .then (() => document.querySelector("#error").innerHTML = obj.text)
+
 }
 
 function editNote() {
-    username = document.querySelector("#username").value;
+    let username = document.querySelector("#username").value;
 
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
@@ -58,11 +67,11 @@ function editNote() {
 
     fetch('http://localhost:8000', {
         method: 'PUT'
-    })
+    });
 }
 
 function deleteNote() {
-    username = document.querySelector("#username").value;
+    let username = document.querySelector("#username").value;
 
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
@@ -70,9 +79,8 @@ function deleteNote() {
     }  
 
     fetch('http://localhost:8000', {
-        method: 'DELETE',
-        credentials: "same-origin"
-    })
+        method: 'DELETE'
+    });
 }
 
 
