@@ -10,6 +10,7 @@ function addNote() {
     let username = document.querySelector("#username").value;
     let note = document.querySelector("#textpad").value;
 
+
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
         return;
@@ -20,13 +21,13 @@ function addNote() {
     }
 
     let info = {
-        "name": username,
-        "text": note,
-        "type": "Add"
+        "note": note
     };
 
-    fetch('http://localhost:8000', {
+    console.log(JSON.stringify(info));
+    fetch(`http://localhost:8000/${username}`, {
         method: 'POST',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(info)
     });
 
@@ -34,22 +35,14 @@ function addNote() {
 
 function viewNote() {
     let username = document.querySelector("#username").value;
-    let response;
 
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
         return;
     }
-    
-    let info = {
-        "name": username,
-        "type": "View"
-    };
 
-    console.log(JSON.stringify(info));
-    fetch('http://localhost:8000', {
-        method: 'POST',
-        body: JSON.stringify(info)
+    fetch(`http://localhost:8000/${username}`, {
+        method: 'GET'
     })
     .then (response => response.json())
     .then (data => obj = data)
@@ -59,14 +52,27 @@ function viewNote() {
 
 function editNote() {
     let username = document.querySelector("#username").value;
+    let note = document.querySelector("#textpad").value;    // Query text box edited note is in
+
 
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
         return;
     }
+    else if (note == '') { 
+        document.querySelector("#error").innerHTML = " Please enter a note";    // Change this for edited note textbox
+        return;
+    }
 
-    fetch('http://localhost:8000', {
-        method: 'PUT'
+    let info = {
+        "note": note
+    };
+
+    console.log(JSON.stringify(info));
+    fetch(`http://localhost:8000/${username}`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(info)
     });
 }
 
@@ -78,7 +84,7 @@ function deleteNote() {
         return;
     }  
 
-    fetch('http://localhost:8000', {
+    fetch(`http://localhost:8000/${username}`, {
         method: 'DELETE'
     });
 }
