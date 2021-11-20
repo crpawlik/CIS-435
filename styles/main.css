@@ -1,1 +1,42 @@
-
+* {
+    font-family: sans-serif;
+}
+header {
+    margin: 0 auto;
+    text-align: center;
+    float: none;
+}
+main {
+    margin: 0 auto;
+    text-align: center;
+    float: none;
+}
+#options {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 7px;
+    padding-left: 9px;
+    font-size:12px;
+}
+#textpad {
+    display: none;
+    width: 75%; 
+    max-width: 100%; 
+    min-width: 75%; 
+    height: 320px; 
+    resize: vertical;
+}
+#editNote {
+    display: none;
+}
+#removeNote {
+    display: none;
+}
+#error {
+    display: none;
+}
+footer {
+    text-align: center;
+    float: none;
+    margin-top: -12px;
+}

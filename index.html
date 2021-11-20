@@ -11,27 +11,26 @@
 <body>
     <header>
         <h1>Note Tracker</h1>
-        <h2>Welcome to Note Tracker! Add a note below, or view and edit any existing notes</h2>
-        <h3 id="error">Use this to display error message</h3>
+        <h4>Welcome to Note Tracker! Add a note below, or view and edit any existing notes</h4>
+        <h5 id="error">Use this to display error message</h5>
     </header>
-    <section id="options">
-        <h4>Options</h4>
-        <button type="button" id="newNote">New Note</button>
-        <button type="button" id="viewNote">View Note</button>
-        <button type="button" id="editNote">Edit Note</button>
-        <button type="button" id="removeNote">Remove Note</button>
-    </section>
     <main>
         <h2>Notepad</h2>
         <form id="notepad">
             <label for="username">Username:</label>
-            <input type="text" id="username"><br><br>
-            <textarea rows="20" id="textpad" placeholder="Write Your Note Here..."></textarea><br>
+            <input type="text" id="username">
+            <section id="options">
+                <button type="button" id="newNote">New Note</button>
+                <button type="button" id="viewNote">View Note</button>
+                <button type="button" id="editNote">Edit Note</button>
+                <button type="button" id="removeNote">Remove Note</button>
+            </section>
+            <textarea id="textpad" placeholder="Write Your Note Here..."></textarea><br>
         </form>
         <input type="button" id="addNote" value="Submit Note!">
     </main>
     <footer>
-        <p>insert random metadata or stuff here</p>
+        <p>Word Count: </p>
     </footer>
 </body>
 </html>
