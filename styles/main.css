@@ -21,20 +21,15 @@ body {
 #textpad {
     display: none;
     margin:auto;
-    width: 75%; 
-    max-width: 100%; 
-    min-width: 75%; 
+    width: 40%; 
+    max-width: 70%; 
+    min-width: 30%; 
     height: 320px; 
     resize: vertical;
 }
 
 #editNote {
     margin: auto;
-    display: none;
-}
-
-#updateNote {
-    margin: 5px auto;
     display: none;
 }
 
@@ -53,9 +48,18 @@ h5 {
     display: none;
 }
 
-#addNote {
-    margin: 5px auto;
+.submission {
+    margin: auto;
+    align-items: center;
+}
+
+.submission input[type="button"] {
+    margin: auto;
     display: none;
+}
+
+input[type="button"], button[type="button"] {
+    cursor: pointer;
 }
 
 footer {

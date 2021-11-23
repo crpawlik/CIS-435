@@ -1,8 +1,28 @@
 let storedUsername;
 
+// Clears pages inputs when new notes are added
+function clearPage() { 
+    storedUsername = '';
+
+    document.querySelector("#textpad").style.display = "none";
+    document.querySelector("#textpad").value = '';
+
+    document.querySelector("#note").style.display = "none";
+    document.querySelector("#note").innerHTML= '';
+
+    document.querySelector("#addNote").style.display = "none";
+    document.querySelector("#editNote").style.display = "none";
+    document.querySelector("#removeNote").style.display = "none";
+    document.querySelector("#updateNote").style.display = "none";
+    document.querySelector("#clear").style.display = "none";
+
+    document.querySelector("#error").style.display = "none";
+    document.querySelector("#display").style.display = "none";
+}
+
 function displayNotepad() {
     let username = document.querySelector("#username").value;
-    document.querySelector('#textpad');
+    clearPage();
 
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
@@ -11,13 +31,14 @@ function displayNotepad() {
     }
 
     document.querySelector('#textpad').style.display = "block";
-    document.querySelector('#addNote').style.display = "block";
+    document.querySelector('#addNote').style.display = "inline-block";
+    document.querySelector('#clear').style.display = "inline-block";
     document.querySelector("#error").style.display = "none";
 }
 
 function displayEditableNote() {
     let username = document.querySelector("#username").value;
-    document.querySelector('#textpad').innerHTML = document.querySelector('#note').innerHTML;
+    document.querySelector('#textpad').value = document.querySelector('#note').innerHTML;
     document.querySelector('#textpad').style.display = "block";
 
     if (username == '') {
@@ -27,11 +48,9 @@ function displayEditableNote() {
     }
 
     document.querySelector('#textpad').style.display = "block";
-    document.querySelector('#updateNote').style.display = "block";
+    document.querySelector('#updateNote').style.display = "inline-block";
     document.querySelector("#error").style.display = "none";
 }
-
-//      Update all messages to show in new HTML element for messages instead of error       //
 
 function addNote() {
     let username = document.querySelector("#username").value;
@@ -76,7 +95,11 @@ function addNote() {
 }
 
 function viewNote() {
-    let username = document.querySelector("#username").value;
+    username = document.querySelector("#username").value;
+    document.querySelector("#textpad").style.display = "none";
+    document.querySelector("#addNote").style.display = "none";
+    document.querySelector("#display").style.display = "none";
+    document.querySelector("#error").style.display = "none";
 
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
@@ -87,31 +110,30 @@ function viewNote() {
     fetch(`http://localhost:8000/${username}`, {
         method: 'GET'
     })
-    .then (response => response.json())
+    .then (function(response) {
+        if (response.status == "200") {
+            document.querySelector("#note").style.display = "block";
+            document.querySelector("#editNote").style.display = "inline-block";
+            document.querySelector("#removeNote").style.display = "inline-block";
+            document.querySelector("#error").style.display = "none";
+        }
+        return response.json();
+    })
     .then (data => {
         document.querySelector("#note").innerHTML = data.text;
+        document.querySelector("#note").style.display = "block";
     });
 
-    storedUsername = username;
-    
-    document.querySelector("#note").style.display = "block";
-    document.querySelector("#editNote").style.display = "block";
-    document.querySelector("#removeNote").style.display = "block";
-
+    storedUsername = username; // Used for editing and deleting note once it's being viewed so th eusername can't be changed
+    document.querySelector("#clear").style.display = "inline-block"
 }
 
-function editNote() {   //Link this to a save changes button
-    let username = document.querySelector("#username").value;
-    let note = document.querySelector("#textpad").value;    // Query text box edited note is in
+function editNote() { 
+    username = storedUsername;
+    let note = document.querySelector("#textpad").value;    
 
-
-    if (username == '') {
-        document.querySelector("#error").innerHTML = "Please enter a username";
-        document.querySelector("#error").style.display = "block";
-        return;
-    }
-    else if (note == '') { 
-        document.querySelector("#error").innerHTML = " Please enter a note";    // Change this for edited note textbox
+    if (note == '') { 
+        document.querySelector("#error").innerHTML = "Please enter a new note or select remove if you want to delete this note";    
         document.querySelector("#error").style.display = "block";
         return;
     }
@@ -141,13 +163,7 @@ function editNote() {   //Link this to a save changes button
 }
 
 function deleteNote() {
-    let username = document.querySelector("#username").value;
-
-    if (username == '') {
-        document.querySelector("#error").innerHTML = "Please enter a username";
-        document.querySelector("#error").style.display = "block";
-        return;
-    }  
+    username = storedUsername;
 
     fetch(`http://localhost:8000/${username}`, {
         method: 'DELETE'
@@ -156,6 +172,8 @@ function deleteNote() {
         if (response.status == "200") {
             document.querySelector("#display").innerHTML = "Your note has been removed";
             document.querySelector("#display").style.display = "block";
+            document.querySelector("#note").innerHTML = "Note no longer available";
+            document.querySelector("#editNote").style.display = "none";
             document.querySelector("#error").style.display = "none";
         }
         else { 
@@ -174,6 +192,7 @@ function start() {
     let saveChangesButton = document.querySelector("#updateNote"); 
     let deleteButton = document.querySelector("#removeNote");
     let noteButton = document.querySelector("#addNote");
+    let clearButton = document.querySelector("#clear");
 
     newNoteButton.addEventListener("click", displayNotepad);
     viewButton.addEventListener("click", viewNote);
@@ -181,7 +200,7 @@ function start() {
     saveChangesButton.addEventListener("click", editNote);
     deleteButton.addEventListener("click", deleteNote);
     noteButton.addEventListener("click", addNote);
-
+    clearButton.addEventListener("click", clearPage);
 }
 
 window.addEventListener("load", start);
