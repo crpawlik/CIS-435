@@ -1,40 +1,63 @@
 * {
     font-family: sans-serif;
 }
-header {
-    margin: 0 auto;
+
+body {
+    margin: auto;
     text-align: center;
+    align-items: center;
     float: none;
 }
-main {
-    margin: 0 auto;
-    text-align: center;
-    float: none;
-}
+
 #options {
     text-align: center;
+    align-items: center;
     margin-top: 5px;
     margin-bottom: 7px;
     padding-left: 9px;
     font-size:12px;
 }
+
 #textpad {
     display: none;
+    margin:auto;
     width: 75%; 
     max-width: 100%; 
     min-width: 75%; 
     height: 320px; 
     resize: vertical;
 }
+
 #editNote {
+    margin: auto;
     display: none;
 }
+
+#updateNote {
+    margin: 5px auto;
+    display: none;
+}
+
 #removeNote {
+    margin: auto;
     display: none;
 }
-#error {
+
+#display {
+    margin: auto;
     display: none;
 }
+
+h5 {
+    margin: auto;
+    display: none;
+}
+
+#addNote {
+    margin: 5px auto;
+    display: none;
+}
+
 footer {
     text-align: center;
     float: none;
