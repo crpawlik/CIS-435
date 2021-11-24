@@ -4,14 +4,15 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"/>
     <script type="text/javascript" src = "scripts/main.js"></script>
     <link rel="icon" href="img/notepad.png">
     <title>Note Tracker</title>
 </head>
 <body>
     <header>
-        <h1>Note Tracker</h1>
-        <h4>Welcome to Note Tracker! Add a note below, or view and edit any existing notes</h4>
+        <h1 id="title">Note Tracker</h1>
+        <h4 id="subtitle">Welcome to Note Tracker! Add a note below, or view and edit any existing notes</h4>
         <h5 id="error">Use this to display error message</h5>
     </header>
     <main>
@@ -19,25 +20,38 @@
         <form id="notepad">
             <label for="username">Username:</label>
             <input type="text" id="username">
-            <section id="options">
+            <nav id="options">
                 <button type="button" id="newNote">New Note</button>
                 <button type="button" id="viewNote">View Note</button>
                 <button type="button" id="editNote">Edit Note</button>
                 <button type="button" id="removeNote">Remove Note</button>
-            </section>
+            </nav>
             <h4 id="note"></h4>
-            <textarea id="textpad" placeholder="Write Your Note Here..."></textarea><br>
+            <textarea id="textpad" placeholder="Write Your Note Here..." oninput="wordCount()"></textarea><br>
         </form>
         <div class="submission">
             <input type="button" id="updateNote" value="Save Changes">
             <input type="button" id="addNote" value="Submit Note!">
             <input type="button" id="clear" value="Clear Page">
         </div>
-        <br>
         <h5 id="display"></h5>
     </main>
     <footer>
-        <p>Word Count: </p>
+        <p>Word Count: <span id="wordCount">0</span></p>
     </footer>
+    <!-- Wordcounter Script -->
+    <script>
+        function wordCount() {
+            var words = document.getElementById("textpad").value;
+            var count = 0;
+            var textpadSplit = words.split(' ');
+            for (var i=0; i<textpadSplit.length; i++){
+                if (textpadSplit[i] != ""){
+                    count += 1;
+                }
+            }
+            document.getElementById("wordCount").innerHTML = count;
+        }
+    </script>
 </body>
 </html>

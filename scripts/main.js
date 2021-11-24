@@ -183,8 +183,6 @@ function deleteNote() {
         }
     });
 }
-
-
 function start() {
     let newNoteButton = document.querySelector("#newNote");
     let viewButton = document.querySelector("#viewNote");
@@ -202,5 +200,4 @@ function start() {
     noteButton.addEventListener("click", addNote);
     clearButton.addEventListener("click", clearPage);
 }
-
 window.addEventListener("load", start);
