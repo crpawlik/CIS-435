@@ -6,6 +6,7 @@
     font-family: "Logoplexi", sans-serif;
     color: darkslategray;
 }
+
 body {
     margin: auto;
     text-align: center;
@@ -15,20 +16,25 @@ body {
     width: 70%;
     border: 5px solid peachpuff;
 }
+
 header {
     border-bottom: 5px solid peachpuff;
 }
+
 #title {
     border-bottom: 5px solid peachpuff;
     margin-top: 5px;
 }
+
 #subtitle {
     line-height: 12px;
     margin-bottom: 20px;
 }
+
 #error{
     color: red;
 }
+
 #options {
     text-align: center;
     align-items: center;
@@ -37,6 +43,7 @@ header {
     padding-left: 9px;
     font-size:12px;
 }
+
 #textpad {
     display: none;
     margin:auto;
@@ -47,46 +54,70 @@ header {
     resize: vertical;
     font-family: sans-serif;
 }
+
 button {
     background-color: rgb(143, 143, 253);
     font-family: "Times New Roman";
 }
+
 .submission > input {
     background-color: rgb(143, 143, 253);
     font-family: "Times New Roman";
 }
+
 #editNote {
     margin: auto;
     display: none;
 }
+
 #username {
     font-family: sans-serif;
 }
+
 #removeNote {
     margin: auto;
     display: none;
 }
+
+#note {
+    text-align: left;
+    display: none;
+    margin: auto;
+    width: auto; 
+    max-width: 25%; 
+    min-width: 5%; 
+}
+
 #display {
     margin: auto;
     display: none;
 }
+
 h5 {
     margin: auto;
     display: none;
 }
+
 .submission {
     margin: auto;
     align-items: center;
 }
+
 .submission input[type="button"] {
     margin: auto;
     display: none;
 }
+
 input[type="button"], button[type="button"] {
     cursor: pointer;
 }
+
 footer {
     text-align: center;
     float: none;
     margin-top: -12px;
+}
+
+li {
+    list-style: none;
 }
