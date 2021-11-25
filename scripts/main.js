@@ -67,7 +67,7 @@ function displayEditableNote() {
     else
         editIndex = checkedNotes[0].value;
 
-    document.querySelector('#textpad').value = notes[editIndex].replaceAll('<br>', '\n');
+    document.querySelector('#textpad').value = notes[editIndex];
     document.querySelector('#textpad').style.display = "block";
 
     if (username == '') {
@@ -183,24 +183,27 @@ function viewNote() {
         const ul = document.createElement('ul');
         
         for (i = 1; i < notes.length; i++) {
-            let note = notes[i];//.replaceAll('\n','<br />');   // Replaces newline characters with line breaks to display properly
-            console.log(note);
+            let note = notes[i];   // Replaces newline characters with line breaks to display properly
 
             const li = document.createElement('li');
             const input = document.createElement('input');
+            const label = document.createElement('label');
             const val = document.createTextNode(note);
 
             input.type = "checkbox";
             input.name = "notes";
             input.value = i;
 
-            li.appendChild(input);
-            li.appendChild(val);
-            li.id = "note" + i;
+            label.appendChild(input);
+            label.appendChild(val);
+            label.id = "note" + i;
+
+            li.appendChild(label);
 
             ul.appendChild(li);
         }
         div.appendChild(ul);
+        div.style = "white-space: pre";     // Allows multiple lines to be displayed correctly for a note
         div.style.display = "block";
         viewing = true;
     }).catch(function(error) {
@@ -230,6 +233,9 @@ function editNote() {
     for (i=1; i < notes.length; i++) {
         let text = '&&';        // Our note delimiter
 
+        if (i > 1 && notes[i] == '')    // Skips the last element for when the array of notes has been resized
+            continue;
+        
         note += (text + notes[i]);
     }
 
@@ -249,11 +255,10 @@ function editNote() {
             document.querySelector("#error").style.display = "none";
 
             document.querySelector("#updateNote").style.display = "none";
-            document.querySelector(`#note${editIndex}`).innerHTML = `<input type='checkbox' name='notes' value='${editIndex}'></input>` + editedNote.replaceAll('\n', '<br>');
+            document.querySelector(`#note${editIndex}`).innerHTML =  `<input type='checkbox' name='notes' value='${editIndex}'></input>` + editedNote;
             document.querySelector("#textpad").style.display = "none";
             document.querySelector("#textpad").value = "";
-            wordCount();
-
+            document.querySelector("#cancelEdit").style.display = "none";
         }
         else {
             document.querySelector("#error").innerHTML = "There was an issue trying to update your note";
@@ -267,6 +272,10 @@ function deleteNote() {
     let username = storedUsername;
     let checkedNotes = document.querySelectorAll('input[name="notes"]:checked');
     let ids = [];
+
+    document.querySelector("#textpad").value = "";
+    document.querySelector("#textpad").style.display = "none";
+    document.querySelector("#cancelEdit").style.display = "none";
 
     if (checkedNotes.length != 0){
         for (i = 0; i < checkedNotes.length; i++) {
@@ -299,26 +308,31 @@ function deleteNote() {
                     continue;
                 }
 
-                let note = notes[i].replaceAll('\n','<br/>');   // Replaces newline characters with line breaks to display properly
+                let note = notes[i];   // Replaces newline characters with line breaks to display properly
 
                 const li = document.createElement('li');
                 const input = document.createElement('input');
+                const label = document.createElement('label');
                 const val = document.createTextNode(note);
 
                 input.type = "checkbox";
                 input.name = "notes";
                 input.value = count;
 
-                li.appendChild(input);
-                li.appendChild(val);
-                li.id = "note" + count;
+                label.appendChild(input);
+                label.appendChild(val);
+                label.id = "note" + count;
+
+                li.appendChild(label);
 
                 ul.appendChild(li);
                 notes[count] = note;
                 count ++;
             }
 
-            if (notes[1] = '') {
+            notes[count] = '';
+
+            if (notes[1] == '') {
                 div.innerHTML = "";
                 div.style.display = "none";
 

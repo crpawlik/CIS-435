@@ -81,10 +81,11 @@ button {
 
 #note {
     text-align: left;
+    align-items: center;
     display: none;
     margin: auto;
     width: auto; 
-    max-width: 25%; 
+    max-width: 15%; 
     min-width: 5%; 
 }
 
@@ -112,12 +113,29 @@ input[type="button"], button[type="button"] {
     cursor: pointer;
 }
 
+input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    padding: 0;
+    margin: 2px;
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+}
+
+label {
+    display: block;
+    padding-left: 15px;
+    text-indent: -20px;
+}
+
 footer {
     text-align: center;
     float: none;
     margin-top: -12px;
 }
 
-li {
+#note li {
     list-style: none;
 }
+
