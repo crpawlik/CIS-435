@@ -18,6 +18,7 @@ function clearPage() {
     document.querySelector("#editNote").style.display = "none";
     document.querySelector("#removeNote").style.display = "none";
     document.querySelector("#updateNote").style.display = "none";
+    document.querySelector("#cancelEdit").style.display = "none";
     document.querySelector("#clear").style.display = "none";
 
     document.querySelector("#error").style.display = "none";
@@ -25,7 +26,12 @@ function clearPage() {
 }
 
 function clearEdit() {
-    
+    document.querySelector("#textpad").style.display = "none";
+    document.querySelector("#textpad").value = '';
+
+    document.querySelector("#updateNote").style.display = "none";
+    document.querySelector("#cancelEdit").style.display = "none";
+    document.querySelector("#display").style.display = "none";
 }
 
 function displayNotepad() {
@@ -72,7 +78,9 @@ function displayEditableNote() {
 
     document.querySelector('#textpad').style.display = "block";
     document.querySelector('#updateNote').style.display = "inline-block";
+    document.querySelector('#cancelEdit').style.display = "inline-block";
     document.querySelector("#error").style.display = "none";
+    document.querySelector("#display").style.display = "none";
 }
 
 // Adds a new note for a user, if one already exists it will append the note to the end
@@ -117,17 +125,14 @@ function addNote() {
         document.querySelector("#display").style.display = "none";
     });
     document.querySelector("#error").style.display = "none";
+    document.querySelector("#textpad").value = '';
 
 }
 
 // Tries to get the note on file for the user from the server and dispalys it
 function viewNote() {
     let username = document.querySelector("#username").value;
-    document.querySelector("#textpad").style.display = "none";
-    document.querySelector("#addNote").style.display = "none";
-    document.querySelector("#display").style.display = "none";
-    document.querySelector("#error").style.display = "none";
-
+    
     if (username != storedUsername) {   // Removes previous notes if the username is changed to view a different user's notes
         document.querySelector("#note").innerHTML= '';
     }
@@ -136,6 +141,12 @@ function viewNote() {
         document.querySelector("#error").style.display = "block";
         return;
     }
+    
+    document.querySelector("#textpad").style.display = "none";
+    document.querySelector("#addNote").style.display = "none";
+    document.querySelector("#display").style.display = "none";
+    document.querySelector("#error").style.display = "none";
+
 
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
@@ -147,8 +158,11 @@ function viewNote() {
         method: 'GET'
     })
     .then(function(response) {
-        if (response.status == "404")
+        if (response.status == "404") {
+            document.querySelector("#error").innerHTML = "There are no notes available for this username";
+            document.querySelector("#error").style.display = "block";
             return response;
+        }
         else if (!response.ok) {
             throw Error(response.statusText);
         }
@@ -163,13 +177,15 @@ function viewNote() {
         return response.json();
     }).then (data => {
         notes = data.text.split('&&');   // Creates an array of out notes starting at 1 since the 0 index is empty
-        
+        console.log(notes);
+
         const div = document.querySelector("#note");
         const ul = document.createElement('ul');
-
+        
         for (i = 1; i < notes.length; i++) {
-            let note = notes[i].replaceAll('\n','<br>');   // Replaces newline characters with line breaks to display properly
-            
+            let note = notes[i];//.replaceAll('\n','<br />');   // Replaces newline characters with line breaks to display properly
+            console.log(note);
+
             const li = document.createElement('li');
             const input = document.createElement('input');
             const val = document.createTextNode(note);
@@ -271,24 +287,51 @@ function deleteNote() {
             document.querySelector("#display").innerHTML = "Your notes have been removed";
             document.querySelector("#display").style.display = "block";
 
-            // Do a for loop to re display like when view is called, that way the correct values are still used for editing and deletion
-            for (i = 0; i < ids.length; i++) {
-                document.querySelector(`#note${ids[i]}`).innerHTML = '';
-                document.querySelector(`#note${ids[i]}`).style.display = "none";
-                notes[ids[i]] = '';
-            }
-            /* Put in separate if statement for when all notes are deleted
-            document.querySelector("#note").innerHTML = "Notes no longer available";
-            document.querySelector("#error").style.display = "none";
+            const div = document.querySelector("#note");
+            const ul = document.createElement('ul');
+            let count = 1;
+
+            div.innerHTML = '';
             
-            document.querySelector("#editNote").style.display = "none";
-            document.querySelector("#updateNote").style.display = "none";
-            document.querySelector("#removeNote").style.display = "none";
-            document.querySelector("#textpad").style.display = "none";
-            document.querySelector("#textpad").value = "";
-            */
+            for (i = 1; i < notes.length; i++) {
+                if (ids.indexOf(`${i}`) != -1) {
+                    notes[i] = '';
+                    continue;
+                }
 
+                let note = notes[i].replaceAll('\n','<br/>');   // Replaces newline characters with line breaks to display properly
 
+                const li = document.createElement('li');
+                const input = document.createElement('input');
+                const val = document.createTextNode(note);
+
+                input.type = "checkbox";
+                input.name = "notes";
+                input.value = count;
+
+                li.appendChild(input);
+                li.appendChild(val);
+                li.id = "note" + count;
+
+                ul.appendChild(li);
+                notes[count] = note;
+                count ++;
+            }
+
+            if (notes[1] = '') {
+                div.innerHTML = "";
+                div.style.display = "none";
+
+                document.querySelector("#error").style.display = "none";
+                document.querySelector("#editNote").style.display = "none";
+                document.querySelector("#updateNote").style.display = "none";
+                document.querySelector("#removeNote").style.display = "none";
+                viewing = false;
+            }
+            else
+                div.appendChild(ul);
+
+            document.querySelector("#error").style.display = "none";      
         }
         else { 
             document.querySelector("#error").innerHTML = "There was an issue trying to delete your notes";

@@ -91,7 +91,7 @@ app.delete('/:username/:ids', (req, res) => {
             console.log(ids);
 
             for (i = 1; i < notes.length; i++){
-                if (ids.includes(i))        // Skips over the indices that were selected to be removed
+                if (ids.indexOf(i) != -1)        // Skips over the indices that were selected to be removed
                     continue;
                 else    
                     updatedNotes += ('&&' + notes[i]);
