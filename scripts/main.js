@@ -25,6 +25,7 @@ function clearPage() {
     document.querySelector("#display").style.display = "none";
 }
 
+// Clears editing textpad
 function clearEdit() {
     document.querySelector("#textpad").style.display = "none";
     document.querySelector("#textpad").value = '';
@@ -35,6 +36,7 @@ function clearEdit() {
     document.querySelector("#display").style.display = "none";
 }
 
+// Displays notepad for adding a note
 function displayNotepad() {
     let username = document.querySelector("#username").value;
     clearPage();
@@ -51,6 +53,7 @@ function displayNotepad() {
     document.querySelector("#error").style.display = "none";
 }
 
+// Displays notepad for editing a note
 function displayEditableNote() {
     let username = storedUsername;
     let checkedNotes = document.querySelectorAll('input[name="notes"]:checked');
@@ -183,7 +186,7 @@ function viewNote() {
         }
         return response.json();
     }).then (data => {
-        notes = data.text.split('&&');   // Creates an array of out notes starting at 1 since the 0 index is empty
+        notes = data.text.split('&&');   // Creates an array of our notes starting at 1 since the 0 index is empty
 
         const div = document.querySelector("#note");
         const ul = document.createElement('ul');
@@ -376,7 +379,7 @@ function deleteNote() {
 function start() {
     let newNoteButton = document.querySelector("#newNote");
     let viewButton = document.querySelector("#viewNote");
-    let editButton = document.querySelector("#editNote"); // Change to show note in an editable text box
+    let editButton = document.querySelector("#editNote");
     let saveChangesButton = document.querySelector("#updateNote"); 
     let deleteButton = document.querySelector("#removeNote");
     let noteButton = document.querySelector("#addNote");
@@ -385,7 +388,7 @@ function start() {
 
     newNoteButton.addEventListener("click", displayNotepad);
     viewButton.addEventListener("click", viewNote);
-    editButton.addEventListener("click", displayEditableNote); // Change to displayEditableNote function
+    editButton.addEventListener("click", displayEditableNote);
     saveChangesButton.addEventListener("click", editNote);
     deleteButton.addEventListener("click", deleteNote);
     noteButton.addEventListener("click", addNote);
