@@ -87,8 +87,6 @@ app.delete('/:username/:ids', (req, res) => {
         }
         else {
             notes = message.split('&&');
-            console.log(notes);
-            console.log(ids);
 
             for (i = 1; i < notes.length; i++){
                 if (ids.indexOf(i) != -1)        // Skips over the indices that were selected to be removed

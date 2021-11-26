@@ -151,6 +151,7 @@ function viewNote() {
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
         document.querySelector("#error").style.display = "block";
+        document.querySelector("#clear").style.display = "block";
         return;
     }
 
