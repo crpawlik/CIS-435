@@ -28,6 +28,7 @@ function clearPage() {
 function clearEdit() {
     document.querySelector("#textpad").style.display = "none";
     document.querySelector("#textpad").value = '';
+    wordCount();
 
     document.querySelector("#updateNote").style.display = "none";
     document.querySelector("#cancelEdit").style.display = "none";
@@ -54,6 +55,10 @@ function displayEditableNote() {
     let username = storedUsername;
     let checkedNotes = document.querySelectorAll('input[name="notes"]:checked');
 
+    // Clears textpad in case a different note is selected for editing
+    document.querySelector('#textpad').value = ''; 
+    document.querySelector('#textpad').style.display = "none";
+
     if (checkedNotes.length == 0){
         document.querySelector("#error").innerHTML = "You have no notes selected, please select one note to edit";
         document.querySelector("#error").style.display = "block";
@@ -69,6 +74,7 @@ function displayEditableNote() {
 
     document.querySelector('#textpad').value = notes[editIndex];
     document.querySelector('#textpad').style.display = "block";
+    wordCount();
 
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
@@ -126,7 +132,7 @@ function addNote() {
     });
     document.querySelector("#error").style.display = "none";
     document.querySelector("#textpad").value = '';
-
+    wordCount();
 }
 
 // Tries to get the note on file for the user from the server and dispalys it
@@ -151,7 +157,7 @@ function viewNote() {
     if (username == '') {
         document.querySelector("#error").innerHTML = "Please enter a username";
         document.querySelector("#error").style.display = "block";
-        document.querySelector("#clear").style.display = "block";
+        document.querySelector("#clear").style.display = "none";
         return;
     }
 
@@ -178,7 +184,6 @@ function viewNote() {
         return response.json();
     }).then (data => {
         notes = data.text.split('&&');   // Creates an array of out notes starting at 1 since the 0 index is empty
-        console.log(notes);
 
         const div = document.querySelector("#note");
         const ul = document.createElement('ul');
@@ -249,7 +254,12 @@ function editNote() {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(info)
     })
-    .then (function(response) {
+    .then(function(response) {
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
+    }).then (function(response) {
         if (response.status == "200") {
             document.querySelector("#display").innerHTML = "Note updated!";
             document.querySelector("#display").style.display = "block";
@@ -260,12 +270,12 @@ function editNote() {
             document.querySelector("#textpad").style.display = "none";
             document.querySelector("#textpad").value = "";
             document.querySelector("#cancelEdit").style.display = "none";
+            wordCount();
         }
-        else {
-            document.querySelector("#error").innerHTML = "There was an issue trying to update your note";
-            document.querySelector("#error").style.display = "block";
-            document.querySelector("#display").style.display = "none";
-        }
+    }).catch(function(error) {
+        document.querySelector("#error").innerHTML = "There was an issue trying to update your note(s)";
+        document.querySelector("#error").style.display = "block";
+        document.querySelector("#display").style.display = "none";
     });
 }
 
@@ -276,7 +286,9 @@ function deleteNote() {
 
     document.querySelector("#textpad").value = "";
     document.querySelector("#textpad").style.display = "none";
+    document.querySelector("#updateNote").style.display = "none";
     document.querySelector("#cancelEdit").style.display = "none";
+    wordCount();
 
     if (checkedNotes.length != 0){
         for (i = 0; i < checkedNotes.length; i++) {
@@ -292,7 +304,12 @@ function deleteNote() {
     fetch(`http://localhost:8000/${username}/${ids}`, {
         method: 'DELETE'
     })
-    .then (function(response) {
+    .then(function(response) {
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
+    }).then (function(response) {
         if (response.status == "200") {
             document.querySelector("#display").innerHTML = "Your notes have been removed";
             document.querySelector("#display").style.display = "block";
@@ -334,12 +351,13 @@ function deleteNote() {
             notes[count] = '';
 
             if (notes[1] == '') {
-                div.innerHTML = "";
+                div.innerHTML = '';
                 div.style.display = "none";
+
+                document.querySelector("#display").innerHTML = "No more notes are available for this username"
 
                 document.querySelector("#error").style.display = "none";
                 document.querySelector("#editNote").style.display = "none";
-                document.querySelector("#updateNote").style.display = "none";
                 document.querySelector("#removeNote").style.display = "none";
                 viewing = false;
             }
@@ -348,11 +366,10 @@ function deleteNote() {
 
             document.querySelector("#error").style.display = "none";      
         }
-        else { 
-            document.querySelector("#error").innerHTML = "There was an issue trying to delete your notes";
-            document.querySelector("#error").style.display = "block";
-            document.querySelector("#display").style.display = "none";
-        }
+    }).catch(function(error) {
+        document.querySelector("#error").innerHTML = "There was an issue trying to delete your notes";
+        document.querySelector("#error").style.display = "block";
+        document.querySelector("#display").style.display = "none";
     });
 }
 

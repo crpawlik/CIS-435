@@ -43,7 +43,7 @@
     <!-- Wordcounter Script -->
     <script>
         function wordCount() {
-            var words = document.getElementById("textpad").value.replace('\n', ' ');    // Accounts for newline characters
+            var words = document.getElementById("textpad").value.replaceAll('\n', ' ');    // Accounts for newline characters
             var count = 0;
             var textpadSplit = words.split(' ');
             for (var i=0; i<textpadSplit.length; i++){
